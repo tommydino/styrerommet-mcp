@@ -75,13 +75,13 @@ try {
     ],
     temp,
   );
-  const installed = path.join(temp, "node_modules", "styrerommet-mcp");
+  const installed = path.join(temp, "node_modules", "styrerommet-plus");
   const metadata: {
     version: string;
     bin: Record<string, string>;
     engines: { node: string };
   } = JSON.parse(readFileSync(path.join(installed, "package.json"), "utf8"));
-  const entrypoint = metadata.bin["styrerommet-mcp"];
+  const entrypoint = metadata.bin["styrerommet-plus"];
   assert.ok(entrypoint, "Package is missing its CLI entrypoint");
 
   // Bundle the exact production installation, without the repo's dev dependencies.
@@ -92,7 +92,7 @@ try {
     recursive: true,
     dereference: true,
     filter: (source) =>
-      !["styrerommet-mcp", ".bin", ".package-lock.json"].includes(
+      !["styrerommet-plus", ".bin", ".package-lock.json"].includes(
         path.relative(dependencies, source).split(path.sep)[0] ?? "",
       ),
   });
@@ -102,7 +102,7 @@ try {
     compatibility: { runtimes: { node: metadata.engines.node } },
   };
   assert.equal(manifest.manifest_version, "0.3");
-  assert.equal(manifest.name, "styrerommet-mcp");
+  assert.equal(manifest.name, "styrerommet-plus");
   assert.ok(manifest.description && manifest.author.name);
   assert.equal(manifest.server.type, "node");
   assert.equal(manifest.server.entry_point, entrypoint);
@@ -112,7 +112,7 @@ try {
     path.join(bundle, "manifest.json"),
     JSON.stringify(manifest, null, 2) + "\n",
   );
-  const mcpb = path.join(temp, "styrerommet-mcp.mcpb");
+  const mcpb = path.join(temp, "styrerommet-plus.mcpb");
   // MCPB is a ZIP with a root manifest; preserve executable permissions on POSIX.
   const zip: Zippable = {};
   for (const name of readdirSync(bundle, { recursive: true, encoding: "utf8" })) {
@@ -159,7 +159,7 @@ try {
       temp,
       "node_modules",
       ".bin",
-      "styrerommet-mcp",
+      "styrerommet-plus",
     );
     assert.ok(statSync(executable).mode & 0o111);
     assert.equal(
@@ -260,7 +260,7 @@ try {
     );
     mkdirSync(destination, { recursive: true });
     copyFileSync(tarball, path.join(destination, packed.filename));
-    copyFileSync(mcpb, path.join(destination, "styrerommet-mcp.mcpb"));
+    copyFileSync(mcpb, path.join(destination, "styrerommet-plus.mcpb"));
   }
 } finally {
   rmSync(temp, { recursive: true, force: true });
