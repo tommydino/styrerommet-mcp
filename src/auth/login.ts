@@ -304,10 +304,10 @@ function formatCookieHeader(
 }
 
 /**
- * Run interactive browser authentication for Styrerommet, Arkiv, Vibbo, and Mitt Bygg.
+ * Run interactive browser authentication for Styrerommet, Arkiv and Vibbo. Mitt Bygg is opt-in.
  */
 export async function runInteractiveLogin(
-  target: "all" | "mittbygg" = "all",
+  target: "standard" | "mittbygg" = "standard",
 ): Promise<LoginResult> {
   const configuredOrgId =
     process.env.STYREROMMET_ORG_ID?.trim() ||
@@ -333,7 +333,7 @@ export async function runInteractiveLogin(
       "Please log in using BankID or Vipps in the opened browser window.\n",
     );
   } else {
-    console.error("  STYREROMMET, VIBBO & MITT BYGG INTERACTIVE LOGIN");
+    console.error("  STYREROMMET, VIBBO & ARKIV INTERACTIVE LOGIN");
     console.error("========================================================");
     console.error(
       "Launching your installed browser (Chrome / Edge / Brave / Arc)...",
@@ -358,7 +358,7 @@ export async function runInteractiveLogin(
     let arkivCookieStr = "";
     let vibboCookieStr = "";
 
-    if (target === "all") {
+    if (target === "standard") {
       // 1. Open the normal entry point, which redirects authenticated users to their tenant.
       console.error("👉 Opening https://styrerommet.no/ for sign-in ...");
       await page.goto("https://styrerommet.no/", {
@@ -550,7 +550,10 @@ export async function runInteractiveLogin(
       }
     }
 
-    // 5. Connect to Mitt Bygg (OBOS Mitt Bygg)
+    let mittbyggCookieStr = "";
+
+    // 5. Connect to Mitt Bygg only when explicitly requested.
+    if (target === "mittbygg") {
     console.error(
       `👉 Connecting to Mitt Bygg (https://mittbygg.styrerommet.no/${orgId})...`,
     );
@@ -558,7 +561,6 @@ export async function runInteractiveLogin(
       waitUntil: "domcontentloaded",
     });
 
-    let mittbyggCookieStr = "";
     let clickedLogin = false;
     const mittbyggStart = Date.now();
     const mittbyggTimeoutMs = 120000; // Allow up to 2 minutes for BankID / SSO prompt
@@ -648,6 +650,8 @@ export async function runInteractiveLogin(
       }
     }
 
+    }
+
     // 6. Update .env file
     const envUpdates: Record<string, string> = {
       STYREROMMET_ORG_ID: orgId,
@@ -698,8 +702,8 @@ export async function runInteractiveLogin(
       target === "mittbygg"
         ? "<b>OBOS Mitt Bygg</b>"
         : orgSlug
-          ? "<b>Styrerommet</b>, <b>Arkiv</b>, <b>Vibbo</b>, and <b>Mitt Bygg</b>"
-          : "<b>Styrerommet</b>, <b>Arkiv</b>, and <b>Mitt Bygg</b>";
+          ? "<b>Styrerommet</b>, <b>Arkiv</b>, and <b>Vibbo</b>"
+          : "<b>Styrerommet</b> and <b>Arkiv</b>";
 
     await page.setContent(`
       <!DOCTYPE html>
@@ -750,7 +754,7 @@ const isMainModule =
 if (isMainModule) {
   const isMittByggOnly =
     process.argv.includes("mittbygg") || process.argv.includes("--mittbygg");
-  runInteractiveLogin(isMittByggOnly ? "mittbygg" : "all")
+  runInteractiveLogin(isMittByggOnly ? "mittbygg" : "standard")
     .then(() => process.exit(0))
     .catch(() => process.exit(1));
 }
