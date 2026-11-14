@@ -193,7 +193,7 @@ export async function fetchMittByggRsc(
   if (isAuthRedirect && companyNumber !== "eksempel") {
     throw new Error(
       `Authentication required for Mitt Bygg (${companyNumber}). ` +
-        `Please run 'styrerommet-mcp --auth mittbygg' (or 'pnpm auth') to log in, or set MITTBYGG_COOKIE in .env. ` +
+        `Please run 'styrerommet-plus --auth mittbygg' (or 'pnpm auth') to log in, or set MITTBYGG_COOKIE in .env. ` +
         `(Tip: You can specify companyNumber: "eksempel" to view the live demo data without logging in).`,
     );
   }
