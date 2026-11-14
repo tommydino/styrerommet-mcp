@@ -3,7 +3,7 @@
 > [!WARNING]
 > Experimental, unofficial MCP server, not affiliated with OBOS. Use at your own risk. Review and manually approve every tool call, including the data it shares and any changes it makes.
 
-An extended fork of Styrerommet MCP for board workflows with Styrerommet, Vibbo, Cantor, Arkiv and OBOS Mitt Bygg. Read meetings, residents, invoices, accounts and documents; manage suppliers, HMS deviations and maintenance; edit unpublished Vibbo handbook drafts.
+An extended fork of [Styrerommet MCP](https://github.com/AudunWA/styrerommet-mcp) for board workflows with Styrerommet, Vibbo, Cantor, Arkiv and OBOS Mitt Bygg. Read meetings, residents, invoices, accounts and documents; manage suppliers, HMS deviations and maintenance; edit unpublished Vibbo handbook drafts.
 
 ## Install
 
@@ -12,7 +12,7 @@ You need an OBOS account with access to your cooperative and **Chrome or Edge** 
 Sign in before connecting an npm-based client:
 
 ```sh
-npx --yes styrerommet-mcp@latest --auth
+npx --yes styrerommet-plus@latest --auth
 ```
 
 Choose **Vipps** and enable **“Remember me in this browser”** for faster reauthentication. Wait for the terminal to confirm sign-in. Your cooperative is detected automatically, and clients share the saved login on your computer. Run the same command to sign in again. The server uses your installed browser; no browser download or API key is needed.
@@ -28,7 +28,7 @@ Choose **Vipps** and enable **“Remember me in this browser”** for faster rea
    | --- | --- |
    | Name | `styrerommet-plus` |
    | Command | `npx` |
-   | Arguments | `--yes`, `styrerommet-mcp@latest` (two arguments) |
+   | Arguments | `--yes`, `styrerommet-plus@latest` (two arguments) |
 
 3. Save, then select **Restart**. Type `/mcp` in the composer to confirm the connection.
 
@@ -53,7 +53,7 @@ Open **Settings → Developer → Edit Config** and merge this into `claude_desk
   "mcpServers": {
     "styrerommet-plus": {
       "command": "npx",
-      "args": ["--yes", "styrerommet-mcp@latest"]
+      "args": ["--yes", "styrerommet-plus@latest"]
     }
   }
 }
@@ -66,7 +66,7 @@ Configuration file: `~/Library/Application Support/Claude/claude_desktop_config.
 ### Codex
 
 ```sh
-codex mcp add styrerommet -- npx --yes styrerommet-mcp@latest
+codex mcp add styrerommet-plus -- npx --yes styrerommet-plus@latest
 ```
 
 Local Codex clients and ChatGPT Desktop share MCP configuration on the same host. [Official setup](https://learn.chatgpt.com/docs/extend/mcp#configure-with-the-cli).
@@ -74,7 +74,7 @@ Local Codex clients and ChatGPT Desktop share MCP configuration on the same host
 ### Claude Code
 
 ```sh
-claude mcp add --scope user --transport stdio styrerommet -- npx --yes styrerommet-mcp@latest
+claude mcp add --scope user --transport stdio styrerommet-plus -- npx --yes styrerommet-plus@latest
 ```
 
 [Official setup](https://code.claude.com/docs/en/mcp#option-3-add-a-local-stdio-server).
@@ -86,7 +86,7 @@ Once connected, try: “Show my organization and upcoming board meetings.” Res
 
 - Check that `node --version` reports 24 or newer, and run the sign-in command in a terminal first.
 - If a desktop app cannot find `npx`, use its absolute path (`command -v npx` on macOS/Linux, `where npx` on Windows), then restart the app.
-- If `npx` fails to launch on Windows, use command `cmd` with arguments `["/c", "npx", "--yes", "styrerommet-mcp@latest"]`. For CLI setup, put `cmd /c npx --yes styrerommet-mcp@latest` after `--`.
+- If `npx` fails to launch on Windows, use command `cmd` with arguments `["/c", "npx", "--yes", "styrerommet-plus@latest"]`. For CLI setup, put `cmd /c npx --yes styrerommet-plus@latest` after `--`.
 
 </details>
 
@@ -100,7 +100,7 @@ Follow [Styrerommet's terms](https://styrerommet.no/bruksvilkar), [Vibbo's terms
 
 ## Credentials
 
-Credentials and a dedicated browser profile are stored locally under `styrerommet-mcp` in your application-data directory: `~/Library/Application Support` on macOS, `%LOCALAPPDATA%` on Windows, or `${XDG_DATA_HOME:-~/.local/share}` on Linux. Credentials are **plaintext**, with owner-only permissions on POSIX. Protect this directory and never share it.
+Credentials and a dedicated browser profile are stored locally under `styrerommet-plus` in your application-data directory: `~/Library/Application Support` on macOS, `%LOCALAPPDATA%` on Windows, or `${XDG_DATA_HOME:-~/.local/share}` on Linux. Credentials are **plaintext**, with owner-only permissions on POSIX. Protect this directory and never share it.
 
 For optional settings, see [.env.example](https://github.com/tommydino/styrerommet-mcp/blob/main/.env.example). `STYREROMMET_ENV_PATH` overrides the credential file; project `.env` files are not loaded automatically. Use `--auth mittbygg` to refresh only Mitt Bygg, or `NO_AUTO_LOGIN=true` to prevent automatic browser prompts.
 
@@ -267,6 +267,6 @@ pnpm start
 
 Use [Conventional Commits](https://www.conventionalcommits.org/) for PR titles and [SemVer](https://semver.org/) for versions. On a clean release branch, run `pnpm version patch --no-git-tag-version` (or `minor` / `major`); the version hook updates the desktop manifest automatically. Run `pnpm check`, then commit and merge all version changes to `main`.
 
-Publish a [GitHub Release](https://github.com/tommydino/styrerommet-mcp/releases) with a new `vX.Y.Z` tag targeting that merged commit and generated release notes. Creating a GitHub Release does not bump the package version. The workflow tests the package and attaches the Claude Desktop bundle; this fork does not publish to npm. Release notes are the changelog. For a dry run, use **Actions → Publish → Run workflow**. Leave existing release tags unchanged; use a new version to correct a release.
+Publish a [GitHub Release](https://github.com/tommydino/styrerommet-mcp/releases) with a new `vX.Y.Z` tag targeting that merged commit and generated release notes. Creating a GitHub Release does not bump the package version. The workflow tests the package and attaches the Claude Desktop bundle; the npm package `styrerommet-plus` is published with provenance through npm trusted publishing. Release notes are the changelog. For a dry run, use **Actions → Publish → Run workflow**. Leave existing release tags unchanged; use a new version to correct a release.
 
 [MIT License](LICENSE).
