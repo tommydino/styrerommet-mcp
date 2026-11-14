@@ -1,11 +1,9 @@
-# Styrerommet MCP
-
-[![npm version](https://img.shields.io/npm/v/styrerommet-mcp.svg)](https://www.npmjs.com/package/styrerommet-mcp)
+# Styrerommet Plus
 
 > [!WARNING]
 > Experimental, unofficial MCP server, not affiliated with OBOS. Use at your own risk. Review and manually approve every tool call, including the data it shares and any changes it makes.
 
-Connect your AI client to Styrerommet, Vibbo, Cantor, Arkiv and OBOS Mitt Bygg. Read meetings, residents, invoices, accounts and documents; manage suppliers, HMS deviations and maintenance; edit unpublished Vibbo handbook drafts.
+An extended fork of Styrerommet MCP for board workflows with Styrerommet, Vibbo, Cantor, Arkiv and OBOS Mitt Bygg. Read meetings, residents, invoices, accounts and documents; manage suppliers, HMS deviations and maintenance; edit unpublished Vibbo handbook drafts.
 
 ## Install
 
@@ -28,7 +26,7 @@ Choose **Vipps** and enable **“Remember me in this browser”** for faster rea
 
    | Field | Value |
    | --- | --- |
-   | Name | `styrerommet` |
+   | Name | `styrerommet-plus` |
    | Command | `npx` |
    | Arguments | `--yes`, `styrerommet-mcp@latest` (two arguments) |
 
@@ -38,12 +36,12 @@ Use a chat running on your local computer. Workspace policies may restrict local
 
 ### Claude Desktop
 
-[Download the desktop bundle](https://github.com/tommydino/styrerommet-mcp/releases/latest/download/styrerommet-mcp.mcpb), then:
+[Download the desktop bundle](https://github.com/tommydino/styrerommet-mcp/releases/latest/download/styrerommet-plus.mcpb), then:
 
 1. Open **Settings → Desktop app → Extensions → Manage → Advanced settings → Install Extension…** and select the `.mcpb` file.
 2. Start a chat and ask: “Sign in to Styrerommet using `login_interactive`.” Use the Vipps and “Remember me” options described above.
 
-The bundle includes the server and its dependencies. Claude's Node runtime must support **Node.js 24+**; otherwise use the manual setup below. To update, install the latest bundle from the same link. Use one installation method at a time to avoid duplicate servers. [Official setup](https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop).
+The bundle includes the server and its dependencies. Claude's Node runtime must support **Node.js 24+**; otherwise use the manual setup below. To update, install the latest bundle from the same link. Styrerommet Plus can be installed alongside the original because it uses its own extension identity. [Official setup](https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop).
 
 <details>
 <summary>Manual setup with Node.js 24+ and npm</summary>
@@ -53,7 +51,7 @@ Open **Settings → Developer → Edit Config** and merge this into `claude_desk
 ```json
 {
   "mcpServers": {
-    "styrerommet": {
+    "styrerommet-plus": {
       "command": "npx",
       "args": ["--yes", "styrerommet-mcp@latest"]
     }
