@@ -38,7 +38,7 @@ Use a chat running on your local computer. Workspace policies may restrict local
 
 ### Claude Desktop
 
-[Download the desktop bundle](https://github.com/AudunWA/styrerommet-mcp/releases/latest/download/styrerommet-mcp.mcpb), then:
+[Download the desktop bundle](https://github.com/tommydino/styrerommet-mcp/releases/latest/download/styrerommet-mcp.mcpb), then:
 
 1. Open **Settings → Desktop app → Extensions → Manage → Advanced settings → Install Extension…** and select the `.mcpb` file.
 2. Start a chat and ask: “Sign in to Styrerommet using `login_interactive`.” Use the Vipps and “Remember me” options described above.
@@ -104,7 +104,7 @@ Follow [Styrerommet's terms](https://styrerommet.no/bruksvilkar), [Vibbo's terms
 
 Credentials and a dedicated browser profile are stored locally under `styrerommet-mcp` in your application-data directory: `~/Library/Application Support` on macOS, `%LOCALAPPDATA%` on Windows, or `${XDG_DATA_HOME:-~/.local/share}` on Linux. Credentials are **plaintext**, with owner-only permissions on POSIX. Protect this directory and never share it.
 
-For optional settings, see [.env.example](https://github.com/AudunWA/styrerommet-mcp/blob/main/.env.example). `STYREROMMET_ENV_PATH` overrides the credential file; project `.env` files are not loaded automatically. Use `--auth mittbygg` to refresh only Mitt Bygg, or `NO_AUTO_LOGIN=true` to prevent automatic browser prompts.
+For optional settings, see [.env.example](https://github.com/tommydino/styrerommet-mcp/blob/main/.env.example). `STYREROMMET_ENV_PATH` overrides the credential file; project `.env` files are not loaded automatically. Use `--auth mittbygg` to refresh only Mitt Bygg, or `NO_AUTO_LOGIN=true` to prevent automatic browser prompts.
 
 ## Tools
 
@@ -269,6 +269,6 @@ pnpm start
 
 Use [Conventional Commits](https://www.conventionalcommits.org/) for PR titles and [SemVer](https://semver.org/) for versions. On a clean release branch, run `pnpm version patch --no-git-tag-version` (or `minor` / `major`); the version hook updates the desktop manifest automatically. Run `pnpm check`, then commit and merge all version changes to `main`.
 
-Publish a [GitHub Release](https://github.com/AudunWA/styrerommet-mcp/releases) with a new `vX.Y.Z` tag targeting that merged commit and generated release notes. Creating a GitHub Release does not bump the package version. The workflow tests the package, publishes to npm using trusted publishing and attaches the desktop bundle. Release notes are the changelog. For a dry run, use **Actions → Publish → Run workflow**. Leave existing release tags unchanged; use a new version to correct a release.
+Publish a [GitHub Release](https://github.com/tommydino/styrerommet-mcp/releases) with a new `vX.Y.Z` tag targeting that merged commit and generated release notes. Creating a GitHub Release does not bump the package version. The workflow tests the package and attaches the Claude Desktop bundle; this fork does not publish to npm. Release notes are the changelog. For a dry run, use **Actions → Publish → Run workflow**. Leave existing release tags unchanged; use a new version to correct a release.
 
 [MIT License](LICENSE).
