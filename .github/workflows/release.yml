@@ -67,6 +67,9 @@ jobs:
           path: release
       - name: Publish to npm with provenance
         run: npm publish ./release/*.tgz --access public --provenance --ignore-scripts
+        env:
+          # Required only for the first release, before npm can register this workflow as a trusted publisher.
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   release-assets:
     if: github.event_name == 'release'
