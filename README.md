@@ -3,7 +3,7 @@
 > [!WARNING]
 > Experimental, unofficial MCP server, not affiliated with OBOS. Use at your own risk. Review and manually approve every tool call, including the data it shares and any changes it makes.
 
-An extended fork of [Styrerommet MCP](https://github.com/AudunWA/styrerommet-mcp) for board workflows with Styrerommet, Vibbo, Cantor, Arkiv and OBOS Mitt Bygg. Read meetings, residents, invoices, accounts and documents; manage suppliers, HMS deviations and maintenance; edit unpublished Vibbo handbook drafts.
+An extended fork of [Styrerommet MCP](https://github.com/AudunWA/styrerommet-mcp) for board workflows with Styrerommet, Vibbo, Cantor, Arkiv and OBOS Mitt Bygg. Read meetings, residents, invoices, accounts and documents; manage suppliers, HMS deviations and maintenance; edit unpublished Vibbo handbook drafts. Mitt Bygg tools are optional and only need a separate sign-in for cooperatives that use Mitt Bygg.
 
 ## Install
 
@@ -102,7 +102,7 @@ Follow [Styrerommet's terms](https://styrerommet.no/bruksvilkar), [Vibbo's terms
 
 Credentials and a dedicated browser profile are stored locally under `styrerommet-plus` in your application-data directory: `~/Library/Application Support` on macOS, `%LOCALAPPDATA%` on Windows, or `${XDG_DATA_HOME:-~/.local/share}` on Linux. Credentials are **plaintext**, with owner-only permissions on POSIX. Protect this directory and never share it.
 
-For optional settings, see [.env.example](https://github.com/tommydino/styrerommet-mcp/blob/main/.env.example). `STYREROMMET_ENV_PATH` overrides the credential file; project `.env` files are not loaded automatically. Use `--auth mittbygg` to refresh only Mitt Bygg, or `NO_AUTO_LOGIN=true` to prevent automatic browser prompts.
+For optional settings, see [.env.example](https://github.com/tommydino/styrerommet-mcp/blob/main/.env.example). `STYREROMMET_ENV_PATH` overrides the credential file; project `.env` files are not loaded automatically. Mitt Bygg is optional: use `--auth mittbygg` only if your cooperative uses it, or `NO_AUTO_LOGIN=true` to prevent automatic browser prompts.
 
 ## Tools
 
