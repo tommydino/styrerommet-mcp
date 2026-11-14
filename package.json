@@ -47,11 +47,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AudunWA/styrerommet-mcp.git"
+    "url": "git+https://github.com/tommydino/styrerommet-mcp.git"
   },
-  "homepage": "https://github.com/AudunWA/styrerommet-mcp#readme",
+  "homepage": "https://github.com/tommydino/styrerommet-mcp#readme",
   "bugs": {
-    "url": "https://github.com/AudunWA/styrerommet-mcp/issues"
+    "url": "https://github.com/tommydino/styrerommet-mcp/issues"
   },
   "files": [
     "dist/**/*.js",
@@ -61,5 +61,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "mcpName": "io.github.AudunWA/styrerommet-mcp"
+  "mcpName": "io.github.tommydino/styrerommet-mcp"
 }
