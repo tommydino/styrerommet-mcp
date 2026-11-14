@@ -1,11 +1,13 @@
 {
   "$schema": "https://raw.githubusercontent.com/modelcontextprotocol/mcpb/main/schemas/mcpb-manifest-v0.3.schema.json",
   "manifest_version": "0.3",
-  "name": "styrerommet-mcp",
-  "display_name": "Styrerommet",
+  "name": "styrerommet-plus",
+  "display_name": "Styrerommet Plus",
   "version": "0.1.2",
-  "description": "Local tools for Styrerommet, Vibbo, Cantor, Arkiv and OBOS Mitt Bygg.",
-  "author": { "name": "Audun Wigum Arbo" },
+  "description": "Local tools for Styrerommet, Vibbo, Cantor, Arkiv and OBOS Mitt Bygg, with extended board workflows.",
+  "author": {
+    "name": "Audun Wigum Arbo"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/tommydino/styrerommet-mcp"
@@ -20,9 +22,15 @@
     "entry_point": "dist/index.js",
     "mcp_config": {
       "command": "node",
-      "args": ["${__dirname}/dist/index.js"]
+      "args": [
+        "${__dirname}/dist/index.js"
+      ]
     }
   },
   "tools_generated": true,
-  "compatibility": { "runtimes": { "node": ">=24" } }
+  "compatibility": {
+    "runtimes": {
+      "node": ">=24"
+    }
+  }
 }
