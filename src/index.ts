@@ -14,7 +14,7 @@ async function main(): Promise<void> {
   }
   if (args[0] === "--help" || args[0] === "-h") {
     console.log(
-      "Usage: styrerommet-mcp [--auth [mittbygg] | --version | --help]\nWithout arguments, starts the MCP server over stdio.",
+      "Usage: styrerommet-plus [--auth [mittbygg] | --version | --help]\nWithout arguments, starts the MCP server over stdio.",
     );
     return;
   }
@@ -32,7 +32,7 @@ async function main(): Promise<void> {
   if (args[0] === "--auth") {
     const { runInteractiveLogin } = await import("./auth/login.ts");
     const result = await runInteractiveLogin(
-      args[1] === "mittbygg" ? "mittbygg" : "all",
+      args[1] === "mittbygg" ? "mittbygg" : "standard",
     );
     if (!result.success) process.exitCode = 1;
     return;
