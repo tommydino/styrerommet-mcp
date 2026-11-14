@@ -1,11 +1,11 @@
 {
-  "name": "styrerommet-mcp",
+  "name": "styrerommet-plus",
   "version": "0.1.2",
-  "description": "Local MCP server for Styrerommet, Vibbo, Cantor, Arkiv, and OBOS Mitt Bygg.",
+  "description": "Extended local MCP server for Styrerommet, Vibbo, Cantor, Arkiv, and OBOS Mitt Bygg.",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "styrerommet-mcp": "dist/index.js"
+    "styrerommet-plus": "dist/index.js"
   },
   "engines": {
     "node": ">=24"
@@ -61,5 +61,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "mcpName": "io.github.tommydino/styrerommet-mcp"
+  "mcpName": "io.github.tommydino.styrerommet-plus"
 }
