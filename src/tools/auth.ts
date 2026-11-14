@@ -8,8 +8,14 @@ export function registerAuthTools(server: McpServer): void {
     "login_interactive",
     {
       description:
-        "Launch a browser to log into Styrerommet, Arkiv and Vibbo. Mitt Bygg is optional and is only attempted when requested.",
-      inputSchema: z.object({ service: z.enum(["standard", "mittbygg"]).optional().default("standard") }),
+        "Launch a browser to log into Styrerommet, Arkiv and Vibbo. Standard is the default and never opens Mitt Bygg. Select mittbygg only for cooperatives that use OBOS Mitt Bygg.",
+      inputSchema: z.object({
+        service: z
+          .enum(["standard", "mittbygg"])
+          .optional()
+          .default("standard")
+          .describe("standard signs in to Styrerommet, Arkiv and Vibbo; mittbygg is a separate optional sign-in."),
+      }),
       annotations: CREATE_ANNOTATIONS,
     },
     async ({ service }) => {
