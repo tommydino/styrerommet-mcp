@@ -36,7 +36,7 @@ export async function createServer() {
   // Create MCP server
   const server = new McpServer(
     {
-      name: "styrerommet",
+      name: "styrerommet-plus",
       version: packageVersion,
     },
     {
