@@ -17,6 +17,18 @@ npx --yes styrerommet-plus@latest --auth
 
 Choose **Vipps** and enable **“Remember me in this browser”** for faster reauthentication. Wait for the terminal to confirm sign-in. Your cooperative is detected automatically, and clients share the saved login on your computer. Run the same command to sign in again. The server uses your installed browser; no browser download or API key is needed.
 
+## Optional Mitt Bygg
+
+Mitt Bygg is not available to every OBOS cooperative. The normal sign-in above deliberately skips it, so Styrerommet, Arkiv and Vibbo work without a Mitt Bygg account.
+
+Only connect Mitt Bygg when the cooperative uses the service and you need a Mitt Bygg tool:
+
+```sh
+npx --yes styrerommet-plus@latest --auth mittbygg
+```
+
+In an AI client, call `login_interactive` with `service: "mittbygg"` for that separate sign-in. Its default is `service: "standard"`, which never attempts Mitt Bygg. If Mitt Bygg is unavailable, continue with the other tools; it does not block meetings, documents, finance, suppliers, Arkiv or Vibbo.
+
 ## Clients
 
 ### ChatGPT Desktop
