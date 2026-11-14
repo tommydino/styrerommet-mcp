@@ -66,7 +66,9 @@ jobs:
           name: release-packages
           path: release
       - name: Publish to npm with provenance
-        run: npm publish ./release/*.tgz --access public --provenance --ignore-scripts
+        run: |
+          npm publish ./release/*.tgz --access public --provenance --ignore-scripts
+          npm dist-tag add "styrerommet-plus@$(node -p 'require("./release/package/package.json").version')" latest
 
   release-assets:
     if: github.event_name == 'release'
