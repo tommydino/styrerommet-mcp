@@ -8,13 +8,13 @@ export function registerAuthTools(server: McpServer): void {
     "login_interactive",
     {
       description:
-        "Launch a browser to log into Styrerommet, Arkiv, Vibbo, and Mitt Bygg. Detects the selected cooperative and its Vibbo slug from the authenticated Styrerommet session, then saves session cookies and tokens locally.",
-      inputSchema: z.object({}),
+        "Launch a browser to log into Styrerommet, Arkiv and Vibbo. Mitt Bygg is optional and is only attempted when requested.",
+      inputSchema: z.object({ service: z.enum(["standard", "mittbygg"]).optional().default("standard") }),
       annotations: CREATE_ANNOTATIONS,
     },
-    async () => {
+    async ({ service }) => {
       try {
-        const result = await runInteractiveLogin();
+        const result = await runInteractiveLogin(service);
         return {
           content: [
             {
