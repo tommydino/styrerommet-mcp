@@ -3,7 +3,7 @@
   "manifest_version": "0.3",
   "name": "styrerommet-plus",
   "display_name": "Styrerommet Plus",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Local tools for Styrerommet, Vibbo, Cantor, Arkiv and OBOS Mitt Bygg, with extended board workflows.",
   "author": {
     "name": "Audun Wigum Arbo"
