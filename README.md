@@ -219,7 +219,8 @@ For optional settings, see [.env.example](https://github.com/tommydino/styreromm
 | `get_archive_file_details` | **Read** — Metadata for an archive file or folder. |
 | `get_archive_file_revisions` | **Read** — An archive file's previous versions and metadata. |
 | `get_audit_logs` | **Read** — The cooperative's activity and change log. |
-| `email_status` | **Read** — Check local email configuration and optionally test IMAP. |\n| `get_economy` | **Read** — Bank accounts, balances, loans and finance contacts. |
+| `email_status` | **Read** — Check local email configuration and optionally test the IMAP connection with `testConnection: true`. |
+| `get_economy` | **Read** — Bank accounts, balances, loans and finance contacts. |
 | `get_expense` | **Read** — Details of an out-of-pocket expense. |
 | `get_general_assembly` | **Read** — Details of a general assembly. |
 | `get_hms_overview` | **Read** — Health and safety routines, risks and deviations. |
@@ -289,7 +290,9 @@ For optional settings, see [.env.example](https://github.com/tommydino/styreromm
 | `remove_supplier_document` | **Write** — Remove a document link from a supplier. |
 | `reopen_hms_deviation` | **Write** — Reopen a resolved deviation. |
 | `resolve_hms_deviation` | **Write** — Resolve a deviation with a resolution comment. |
-| `search` | **Read** — Search meetings, tasks, documents and other Styrerommet records. |\n| `search_email_contracts` | **Read** — Search Styrerommet email for contracts and agreements. |\n| `search_emails` | **Read** — Search the configured Styrerommet mailbox. |
+| `search` | **Read** — Search meetings, tasks, documents and other Styrerommet records. |
+| `search_email_contracts` | **Read** — Search Styrerommet email for contracts and agreements, optionally combined with supplier or project words. |
+| `search_emails` | **Read** — Search sender, recipients, subject and message text in the configured Styrerommet mailbox. |
 | `search_archive_files` | **Read** — Search archive names and document contents. |
 | `search_invoices` | **Read** — Search invoices by supplier, date and other filters. |
 | `set_supplier_favourite` | **Write** — Add or remove a supplier from the board's favorites. |
