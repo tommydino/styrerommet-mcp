@@ -30,6 +30,7 @@ import { registerVibboTools } from "./tools/vibbo.ts";
 import { registerTopicDraftTools } from "./tools/topics.ts";
 import { registerAuthTools } from "./tools/auth.ts";
 import { registerMittByggTools } from "./tools/mittbygg.ts";
+import { registerEmailTools } from "./tools/email.ts";
 
 export async function createServer() {
   await Promise.all([registry.load(), vibboRegistry.load()]);
@@ -68,6 +69,7 @@ export async function createServer() {
   registerTopicDraftTools(server);
   registerAuthTools(server);
   registerMittByggTools(server);
+  registerEmailTools(server);
 
   // Register generic GraphQL tool (queries only)
   registerGraphqlTool(server);
