@@ -19,8 +19,7 @@ npx --yes styrerommet-plus@latest --auth
 If the command fails on an Apple Silicon Mac with Homebrew, run it from your home directory using the full path to `npx`:
 
 ```sh
-cd ~
-/opt/homebrew/bin/npx --yes styrerommet-plus@latest --auth
+cd ~ /opt/homebrew/bin/npx --yes styrerommet-plus@latest --auth
 ```
 
 Choose **Vipps** and enable **“Remember me in this browser”** for faster reauthentication. Wait for the terminal to confirm sign-in. Your cooperative is detected automatically, and clients share the saved login on your computer. Run the same command to sign in again. The server uses your installed browser; no browser download or API key is needed.
