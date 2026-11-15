@@ -66,12 +66,12 @@ class ImapConnection {
 
 export interface EmailSearchResult {
   uid: number;
-  date?: string;
-  from?: string;
-  to?: string;
-  subject?: string;
-  messageId?: string;
-  preview?: string;
+  date: string | undefined;
+  from: string | undefined;
+  to: string | undefined;
+  subject: string | undefined;
+  messageId: string | undefined;
+  preview: string;
 }
 
 function header(raw: string, name: string): string | undefined {
