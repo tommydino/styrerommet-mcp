@@ -14,22 +14,48 @@ async function main(): Promise<void> {
   }
   if (args[0] === "--help" || args[0] === "-h") {
     console.log(
-      "Usage: styrerommet-plus [--auth [mittbygg] | --version | --help]\nWithout arguments, starts the MCP server over stdio.",
+      "Usage: styrerommet-plus [--auth [mittbygg] | --email-setup | --email-test | --email-remove | --version | --help]\nWithout arguments, starts the MCP server over stdio.",
     );
     return;
   }
-  if (
-    args.length &&
-    !(
-      args[0] === "--auth" &&
-      args.length <= 2 &&
-      (!args[1] || args[1] === "mittbygg")
-    )
-  ) {
+
+  const emailCommands = new Set([
+    "--email-setup",
+    "--email-test",
+    "--email-remove",
+  ]);
+  const validAuth =
+    args[0] === "--auth" &&
+    args.length <= 2 &&
+    (!args[1] || args[1] === "mittbygg");
+  const validEmailCommand = emailCommands.has(args[0]) && args.length === 1;
+  if (args.length && !validAuth && !validEmailCommand) {
     throw new Error("Unknown arguments. Use --help for usage.");
   }
+
   loadConfiguration();
-  if (args[0] === "--email-setup") {\n    const { setupEmail } = await import("./email-config.ts");\n    const { testEmailConnection } = await import("./email-client.ts");\n    const config = await setupEmail();\n    await testEmailConnection();\n    console.log(`Email configured and tested for ${config.email}.`);\n    return;\n  }\n  if (args[0] === "--email-test") {\n    const { testEmailConnection } = await import("./email-client.ts");\n    await testEmailConnection();\n    console.log("Email connection succeeded.");\n    return;\n  }\n  if (args[0] === "--email-remove") {\n    const { removeEmailSetup } = await import("./email-config.ts");\n    await removeEmailSetup();\n    console.log("Local email configuration and Keychain password removed.");\n    return;\n  }\n  if (args[0] === "--auth") {
+
+  if (args[0] === "--email-setup") {
+    const { setupEmail } = await import("./email-config.ts");
+    const { testEmailConnection } = await import("./email-client.ts");
+    const config = await setupEmail();
+    await testEmailConnection();
+    console.log(`Email configured and tested for ${config.email}.`);
+    return;
+  }
+  if (args[0] === "--email-test") {
+    const { testEmailConnection } = await import("./email-client.ts");
+    await testEmailConnection();
+    console.log("Email connection succeeded.");
+    return;
+  }
+  if (args[0] === "--email-remove") {
+    const { removeEmailSetup } = await import("./email-config.ts");
+    await removeEmailSetup();
+    console.log("Local email configuration and Keychain password removed.");
+    return;
+  }
+  if (args[0] === "--auth") {
     const { runInteractiveLogin } = await import("./auth/login.ts");
     const result = await runInteractiveLogin(
       args[1] === "mittbygg" ? "mittbygg" : "standard",
@@ -37,6 +63,7 @@ async function main(): Promise<void> {
     if (!result.success) process.exitCode = 1;
     return;
   }
+
   const { createServer } = await import("./server.ts");
   const { serveStdio } = await import("@modelcontextprotocol/server/stdio");
   const handle = serveStdio(createServer);
