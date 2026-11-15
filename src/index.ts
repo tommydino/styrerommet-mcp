@@ -28,7 +28,9 @@ async function main(): Promise<void> {
     args[0] === "--auth" &&
     args.length <= 2 &&
     (!args[1] || args[1] === "mittbygg");
-  const validEmailCommand = emailCommands.has(args[0]) && args.length === 1;
+  const firstArg = args[0];
+  const validEmailCommand =
+    firstArg !== undefined && emailCommands.has(firstArg) && args.length === 1;
   if (args.length && !validAuth && !validEmailCommand) {
     throw new Error("Unknown arguments. Use --help for usage.");
   }
