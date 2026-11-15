@@ -50,7 +50,7 @@ class ImapConnection {
   async command(command: string): Promise<string> {
     const tag = "A" + String(++this.tag).padStart(4, "0");
     this.socket.write(tag + " " + command + "\r\n");
-    const raw = await this.waitFor(new RegExp("(?:^|\\\\r?\\\\n)" + tag + " (?:OK|NO|BAD).*\\\\r?\\\\n", "i"), 30_000);
+    const raw = await this.waitFor(new RegExp("(?:^|\\r?\\n)" + tag + " (?:OK|NO|BAD).*\\r?\\n", "i"), 30_000);
     const finalLine = raw.trim().split(/\r?\n/).at(-1) || "";
     if (!new RegExp("^" + tag + " OK", "i").test(finalLine)) {
       throw new Error("IMAP command failed: " + finalLine.replace(tag, "").trim());
