@@ -55,8 +55,25 @@ export function registerEmailTools(server: McpServer): void {
       annotations: READ_ONLY_ANNOTATIONS,
     },
     async ({ query, limit }) => {
-      const terms = ["kontrakt avtale", query.trim()].filter(Boolean).join(" ");
-      return response({ query: terms, messages: await searchEmails(terms, limit) });
+      const batches = await Promise.all([
+        searchEmails("kontrakt", limit),
+        searchEmails("avtale", limit),
+      ]);
+      const extra = query.trim().toLocaleLowerCase("nb-NO");
+      const unique = new Map<number, (typeof batches)[number][number]>();
+      for (const message of batches.flat()) {
+        const searchable = [
+          message.subject,
+          message.from,
+          message.to,
+          message.preview,
+        ].filter(Boolean).join(" ").toLocaleLowerCase("nb-NO");
+        if (!extra || searchable.includes(extra)) unique.set(message.uid, message);
+      }
+      return response({
+        query: query.trim() || undefined,
+        messages: [...unique.values()].slice(0, limit),
+      });
     },
   );
 }
