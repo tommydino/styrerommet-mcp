@@ -29,7 +29,7 @@ async function main(): Promise<void> {
     throw new Error("Unknown arguments. Use --help for usage.");
   }
   loadConfiguration();
-  if (args[0] === "--auth") {
+  if (args[0] === "--email-setup") {\n    const { setupEmail } = await import("./email-config.ts");\n    const { testEmailConnection } = await import("./email-client.ts");\n    const config = await setupEmail();\n    await testEmailConnection();\n    console.log(`Email configured and tested for ${config.email}.`);\n    return;\n  }\n  if (args[0] === "--email-test") {\n    const { testEmailConnection } = await import("./email-client.ts");\n    await testEmailConnection();\n    console.log("Email connection succeeded.");\n    return;\n  }\n  if (args[0] === "--email-remove") {\n    const { removeEmailSetup } = await import("./email-config.ts");\n    await removeEmailSetup();\n    console.log("Local email configuration and Keychain password removed.");\n    return;\n  }\n  if (args[0] === "--auth") {
     const { runInteractiveLogin } = await import("./auth/login.ts");
     const result = await runInteractiveLogin(
       args[1] === "mittbygg" ? "mittbygg" : "standard",
