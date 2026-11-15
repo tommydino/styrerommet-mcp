@@ -80,6 +80,31 @@ Use a chat running on your local computer. Workspace policies may restrict local
 
 The bundle includes the server and its dependencies. Claude's Node runtime must support **Node.js 24+**; otherwise use the manual setup below. To update, install the latest bundle from the same link. Styrerommet Plus can be installed alongside the original because it uses its own extension identity. [Official setup](https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop).
 
+
+#### Configure email for the Claude Desktop bundle
+
+The MCPB bundle runs locally as your macOS user, so it uses the same email configuration and macOS Keychain entry as the command-line version. After installing or updating the bundle, configure email once in Terminal:
+
+```sh
+npx --yes styrerommet-plus@0.1.7 --email-setup
+```
+
+Enter the Styrerommet email address and email password. Press Enter to accept the defaults `imap.styrerommet.no`, port `993` and TLS. Password input is hidden and the password is stored only in **macOS Keychain** under the service `styrerommet-plus-email`. Non-secret settings are stored in `~/.config/styrerommet-plus/email.json`.
+
+Verify the connection:
+
+```sh
+npx --yes styrerommet-plus@0.1.7 --email-test
+```
+
+Fully quit and reopen Claude Desktop afterwards. Claude will then have the read-only tools `email_status`, `search_emails` and `search_email_contracts`. Never paste the email password into Claude, an MCP configuration file, GitHub or a project `.env` file. macOS may ask for permission to access the Keychain item the first time Claude uses email search.
+
+Normal Styrerommet, Arkiv and Vibbo sign-in remains separate and can be started with `login_interactive` or:
+
+```sh
+npx --yes styrerommet-plus@0.1.7 --auth
+```
+
 <details>
 <summary>Manual setup with Node.js 24+ and npm</summary>
 
