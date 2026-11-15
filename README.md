@@ -69,6 +69,14 @@ In an AI client, call `login_interactive` with `service: "mittbygg"` for that se
 
 3. Save, then select **Restart**. Type `/mcp` in the composer to confirm the connection.
 
+If ChatGPT Desktop cannot find `npx` on an Apple Silicon Mac with Homebrew, use its absolute path as the command:
+
+```text
+/opt/homebrew/bin/npx
+```
+
+Keep the arguments unchanged: `--yes` and `styrerommet-plus@latest`. On Intel Macs or other installations, find the correct path with `command -v npx`.
+
 Use a chat running on your local computer. Workspace policies may restrict local servers. [Official setup](https://learn.chatgpt.com/docs/extend/mcp#configure-in-the-chatgpt-desktop-app).
 
 ### Claude Desktop
