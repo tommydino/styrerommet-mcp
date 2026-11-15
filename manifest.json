@@ -3,7 +3,7 @@
   "manifest_version": "0.3",
   "name": "styrerommet-plus",
   "display_name": "Styrerommet Plus",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Local tools for Styrerommet, secure read-only email search, Vibbo, Cantor, Arkiv and optional OBOS Mitt Bygg.",
   "author": {
     "name": "Audun Wigum Arbo"

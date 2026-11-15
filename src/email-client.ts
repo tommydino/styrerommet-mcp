@@ -14,6 +14,8 @@ class ImapConnection {
     this.socket = socket;
     socket.setEncoding("utf8");
     socket.on("data", (chunk) => { this.buffer += chunk; });
+    // A socket can fail just after a response has completed.
+    socket.on("error", () => {});
   }
 
   static async connect(config: EmailConfig): Promise<ImapConnection> {
@@ -23,34 +25,71 @@ class ImapConnection {
       servername: config.host,
       rejectUnauthorized: true,
     });
-    await new Promise<void>((resolve, reject) => {
-      socket.once("secureConnect", resolve);
-      socket.once("error", reject);
-    });
     const connection = new ImapConnection(socket);
-    await connection.waitFor(/\r?\n/, 15_000);
-    return connection;
+    try {
+      await connection.waitFor("secureConnect", () => true, "TLS connection", 15_000);
+      await connection.waitForResponse(/\r?\n/, "server greeting", 15_000);
+      return connection;
+    } catch (error) {
+      connection.close();
+      throw error;
+    }
   }
 
-  private async waitFor(pattern: RegExp, timeoutMs: number): Promise<string> {
-    const started = Date.now();
-    while (Date.now() - started < timeoutMs) {
+  private waitFor<T>(
+    event: "secureConnect" | "data",
+    read: () => T | undefined,
+    stage: string,
+    timeoutMs: number,
+  ): Promise<T> {
+    return new Promise((resolve, reject) => {
+      const cleanup = () => {
+        clearTimeout(timer);
+        this.socket.off(event, onReady);
+        this.socket.off("error", onError);
+        this.socket.off("close", onClose);
+      };
+      const onReady = () => {
+        const value = read();
+        if (value === undefined) return;
+        cleanup();
+        resolve(value);
+      };
+      const onError = (error: Error) => {
+        cleanup();
+        reject(new Error("IMAP " + stage + " failed: " + error.message, { cause: error }));
+      };
+      const onClose = () => onError(new Error("Server closed the connection."));
+      const timer = setTimeout(() => {
+        cleanup();
+        this.socket.destroy();
+        reject(new Error("IMAP " + stage + " timed out after " + timeoutMs / 1000 + " seconds."));
+      }, timeoutMs);
+      this.socket.on(event, onReady);
+      this.socket.once("error", onError);
+      this.socket.once("close", onClose);
+      if (this.socket.destroyed) onClose();
+      else if (event === "data") onReady();
+    });
+  }
+
+  private waitForResponse(pattern: RegExp, stage: string, timeoutMs: number): Promise<string> {
+    return this.waitFor("data", () => {
       const match = this.buffer.match(pattern);
-      if (match?.index !== undefined) {
-        const end = match.index + match[0].length;
-        const result = this.buffer.slice(0, end);
-        this.buffer = this.buffer.slice(end);
-        return result;
-      }
-      await new Promise((resolve) => setTimeout(resolve, 20));
-    }
-    throw new Error("Timed out while waiting for the IMAP server.");
+      if (match?.index === undefined) return undefined;
+      const end = match.index + match[0].length;
+      const result = this.buffer.slice(0, end);
+      this.buffer = this.buffer.slice(end);
+      return result;
+    }, stage, timeoutMs);
   }
 
   async command(command: string): Promise<string> {
     const tag = "A" + String(++this.tag).padStart(4, "0");
-    this.socket.write(tag + " " + command + "\r\n");
-    const raw = await this.waitFor(new RegExp("(?:^|\\r?\\n)" + tag + " (?:OK|NO|BAD).*\\r?\\n", "i"), 30_000);
+    const stage = command.split(" ", command.startsWith("UID ") ? 2 : 1).join(" ");
+    const response = this.waitForResponse(new RegExp("(?:^|\\r?\\n)" + tag + " (?:OK|NO|BAD).*\\r?\\n", "i"), stage, 30_000);
+    if (!this.socket.destroyed) this.socket.write(tag + " " + command + "\r\n");
+    const raw = await response;
     const finalLine = raw.trim().split(/\r?\n/).at(-1) || "";
     if (!new RegExp("^" + tag + " OK", "i").test(finalLine)) {
       throw new Error("IMAP command failed: " + finalLine.replace(tag, "").trim());
@@ -59,8 +98,7 @@ class ImapConnection {
   }
 
   close(): void {
-    this.socket.write("ZZZZ LOGOUT\r\n");
-    this.socket.end();
+    this.socket.destroy();
   }
 }
 
@@ -114,15 +152,28 @@ export async function testEmailConnection(): Promise<void> {
 export async function searchEmails(query: string, limit = 20): Promise<EmailSearchResult[]> {
   const clean = query.trim();
   if (!clean) throw new Error("Search query cannot be empty.");
+  return searchMailbox([clean], limit);
+}
+
+export async function searchContractEmails(limit = 20): Promise<EmailSearchResult[]> {
+  return searchMailbox(["kontrakt", "avtale"], limit);
+}
+
+async function searchMailbox(queries: string[], limit: number): Promise<EmailSearchResult[]> {
   const safeLimit = Math.max(1, Math.min(limit, 50));
   return withMailbox(async (client) => {
-    const result = await client.command("UID SEARCH TEXT " + quote(clean));
-    const line = result.match(/^\* SEARCH(?: (.*))?$/im)?.[1] || "";
-    const uids = line.split(/\s+/).filter(Boolean).map(Number).filter(Number.isFinite).slice(-safeLimit).reverse();
+    const uids = new Set<number>();
+    for (const query of queries) {
+      const result = await client.command("UID SEARCH TEXT " + quote(query));
+      const line = result.match(/^\* SEARCH(?: ([^\r\n]*))?$/im)?.[1] || "";
+      const matches = line.split(/\s+/).filter(Boolean).map(Number).filter(Number.isFinite);
+      for (const uid of matches.slice(-safeLimit).reverse()) uids.add(uid);
+    }
+
     const messages: EmailSearchResult[] = [];
     for (const uid of uids) {
       const raw = await client.command(
-        "UID FETCH " + uid + " (BODY.PEEK[HEADER.FIELDS (DATE FROM TO SUBJECT MESSAGE-ID)] BODY.PEEK[TEXT])",
+        "UID FETCH " + uid + " (BODY.PEEK[HEADER.FIELDS (DATE FROM TO SUBJECT MESSAGE-ID)] BODY.PEEK[TEXT]<0.16384>)",
       );
       messages.push(parseFetch(uid, raw));
     }

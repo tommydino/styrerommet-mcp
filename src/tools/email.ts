@@ -2,7 +2,7 @@ import type { McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod/v4";
 import { READ_ONLY_ANNOTATIONS } from "../annotations.ts";
 import { loadEmailConfig } from "../email-config.ts";
-import { searchEmails, testEmailConnection } from "../email-client.ts";
+import { searchContractEmails, searchEmails, testEmailConnection } from "../email-client.ts";
 
 function response(value: unknown) {
   return { content: [{ type: "text" as const, text: JSON.stringify(value, null, 2) }] };
@@ -55,24 +55,20 @@ export function registerEmailTools(server: McpServer): void {
       annotations: READ_ONLY_ANNOTATIONS,
     },
     async ({ query, limit }) => {
-      const batches = await Promise.all([
-        searchEmails("kontrakt", limit),
-        searchEmails("avtale", limit),
-      ]);
+      const messages = await searchContractEmails(limit);
       const extra = query.trim().toLocaleLowerCase("nb-NO");
-      const unique = new Map<number, (typeof batches)[number][number]>();
-      for (const message of batches.flat()) {
+      const matches = messages.filter((message) => {
         const searchable = [
           message.subject,
           message.from,
           message.to,
           message.preview,
         ].filter(Boolean).join(" ").toLocaleLowerCase("nb-NO");
-        if (!extra || searchable.includes(extra)) unique.set(message.uid, message);
-      }
+        return !extra || searchable.includes(extra);
+      });
       return response({
         query: query.trim() || undefined,
-        messages: [...unique.values()].slice(0, limit),
+        messages: matches.slice(0, limit),
       });
     },
   );
