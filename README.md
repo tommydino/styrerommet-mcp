@@ -351,3 +351,7 @@ Use [Conventional Commits](https://www.conventionalcommits.org/) for PR titles a
 Publish a [GitHub Release](https://github.com/tommydino/styrerommet-mcp/releases) with a new `vX.Y.Z` tag targeting that merged commit and generated release notes. Creating a GitHub Release does not bump the package version. The workflow tests the package and attaches the Claude Desktop bundle; the npm package `styrerommet-plus` is published with provenance through npm trusted publishing. Release notes are the changelog. For a dry run, use **Actions → Publish → Run workflow**. Leave existing release tags unchanged; use a new version to correct a release.
 
 [MIT License](LICENSE).
+
+### Upubliserte nyheter på Vibbo
+
+Bruk `vibbo_create_news_draft` med en tittel for å opprette et upublisert nyhetsutkast i boligselskapet som er logget inn. Verktøyet publiserer ikke nyheten og sender ingen varsler. Responsen inneholder lenke og ID; kontroller utkastet med `vibbo_get_news`. Nyhetsutkast kan foreløpig bare opprettes med tittel gjennom dette verktøyet.

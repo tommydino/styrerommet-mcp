@@ -28,6 +28,7 @@ import { registerArchiveTools } from "./tools/archive.ts";
 import { registerCantorTools } from "./tools/cantor.ts";
 import { registerVibboTools } from "./tools/vibbo.ts";
 import { registerTopicDraftTools } from "./tools/topics.ts";
+import { registerNewsDraftTools } from "./tools/news-drafts.ts";
 import { registerAuthTools } from "./tools/auth.ts";
 import { registerMittByggTools } from "./tools/mittbygg.ts";
 import { registerEmailTools } from "./tools/email.ts";
@@ -67,6 +68,7 @@ export async function createServer() {
   registerCantorTools(server);
   registerVibboTools(server);
   registerTopicDraftTools(server);
+  registerNewsDraftTools(server);
   registerAuthTools(server);
   registerMittByggTools(server);
   registerEmailTools(server);
