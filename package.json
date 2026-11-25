@@ -1,6 +1,6 @@
 {
   "name": "styrerommet-plus",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Extended local MCP server for Styrerommet, email, Vibbo, Cantor, Arkiv, and optional OBOS Mitt Bygg.",
   "type": "module",
   "main": "dist/index.js",
