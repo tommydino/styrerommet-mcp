@@ -73,7 +73,7 @@ describe("Mitt Bygg Client", () => {
     });
   });
 
-  describe("Mitt Bygg Live / Integration Queries (eksempel instance)", () => {
+  describe("Mitt Bygg Live / Integration Queries (eksempel instance)", { skip: process.env.RUN_MITTBYGG_LIVE_TESTS !== "1" }, () => {
     it("fetches maintenance plan with measures and recommendations", async () => {
       const plan = await getMittByggMaintenancePlan("eksempel");
       assert.equal(plan.companyNumber, "eksempel");
