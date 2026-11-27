@@ -37,7 +37,7 @@ test("vibbo_create_news_draft creates an unpublished shell and saves its title a
       } else if (body.operationName === "createNews") {
         assert.match(
           body.variables.input.dateFrom,
-          /^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$/,
+          /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/,
         );
         assert.deepEqual(
           { ...body.variables.input, dateFrom: "<timestamp>" },
