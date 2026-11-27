@@ -51,8 +51,8 @@ export function registerNewsDraftTools(server: McpServer): void {
       const organizationId = await getVibboOrgNodeId();
       const organizationSlug = getVibboOrgSlug();
 
-      // createNews only creates the empty draft shell. Passing editor fields
-      // such as title in CreateNewsInput makes Vibbo reject the mutation.
+      // Match Vibbo's own create-news request. The title is initially blank
+      // because the editable title is stored in the entity revision below.
       const createResponse = await vibboGraphqlQuery<{
         createNews?: {
           id: string;
@@ -67,6 +67,10 @@ export function registerNewsDraftTools(server: McpServer): void {
           input: {
             organizationId,
             authorOrganizationId: organizationId,
+            dateFrom: new Date().toISOString(),
+            dateTo: null,
+            title: "",
+            topicIds: [],
           },
         },
         false,
