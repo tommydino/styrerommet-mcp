@@ -35,15 +35,22 @@ test("vibbo_create_news_draft creates an unpublished shell and saves its title a
       if (body.operationName === "getVibboOrgNodeId") {
         data = { organization: { id: "Organization:123" } };
       } else if (body.operationName === "createNews") {
-        assert.deepEqual(body.variables.input, {
-          organizationId: "Organization:123",
-          authorOrganizationId: "Organization:123",
-        });
-        assert.equal(
-          "title" in body.variables.input,
-          false,
-          "CreateNewsInput must not contain editor fields",
+        assert.match(
+          body.variables.input.dateFrom,
+          /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/,
         );
+        assert.deepEqual(
+          { ...body.variables.input, dateFrom: "<timestamp>" },
+          {
+            organizationId: "Organization:123",
+            authorOrganizationId: "Organization:123",
+            dateFrom: "<timestamp>",
+            dateTo: null,
+            title: "",
+            topicIds: [],
+          },
+        );
+        assert.equal(init.headers["x-version"], "931");
         data = {
           createNews: {
             id: "News:456",

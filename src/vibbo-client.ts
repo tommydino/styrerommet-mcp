@@ -39,7 +39,7 @@ function getHeaders(): Record<string, string> {
     pragma: "no-cache",
     "x-proxied-service": "",
     "x-proxied-service-name": "vibbo",
-    "x-version": "827",
+    "x-version": process.env.VIBBO_CLIENT_VERSION?.trim() || "931",
   };
 }
 
